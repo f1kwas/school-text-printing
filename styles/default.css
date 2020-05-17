@@ -1,3 +1,8 @@
 #myBoard {
   border: 0px solid #000000;
 }
+
+@font-face {
+  font-family: schoolFont;
+  src: url(../fonts/Elementarz2.ttf);
+}
