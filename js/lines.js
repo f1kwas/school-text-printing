@@ -3,7 +3,7 @@ function main() {
   var pageWidth = 840;
   var pageHeight = 1188;
   var lineHeight = 30;
-  var lineColor = '#efefef';
+  var lineColor = '#1fefef';
   var textColor = '#c8c8c8';
   var textFont = '75px schoolFont';
   var fileName = '../text.txt'
@@ -12,6 +12,7 @@ function main() {
   c.width = pageWidth;
   c.height = pageHeight;
   c.lineHeight = lineHeight;
+  c.lineColor = lineColor;
   c.textColor = textColor;
   c.textFont = textFont;
   c.addEventListener("click", canvasClick, false);
@@ -23,6 +24,7 @@ function main() {
 function canvasClick(event) {
   var c = event.currentTarget;
   var lineHeight = c.lineHeight;
+  var lineColor = c.lineColor;
   var color = c.textColor;
   var font = c.textFont;
   var rect = c.getBoundingClientRect();
@@ -30,7 +32,7 @@ function canvasClick(event) {
   var mouseYPos = event.clientY - rect.top;
   var rowNumber = calculateRow(mouseYPos, lineHeight);
   var newText = promptText(rowNumber);
-  updateRow(c, rowNumber, lineHeight, newText, color, font);
+  updateRow(c, rowNumber, lineHeight, newText, color, font, lineColor);
 }
 
 function promptText(rowNumber) {
@@ -38,29 +40,44 @@ function promptText(rowNumber) {
   return text;
 }
 
-function updateRow(c, rowNumber, lineHeight, text, color, font) {
+function updateRow(c, rowNumber, lineHeight, text, textColor, font, lineColor) {
   var position = lineHeight * 4 * rowNumber - lineHeight;
-  printText(c, text, position, color, font);
+  cleanRow(c, lineHeight, rowNumber);
+  drawLines(c, lineHeight, lineColor, rowNumber);
+  printText(c, text, position, textColor, font);
 }
 
 function calculateRow(yPos, lineHeight) {
   var rowNumber = Math.floor(yPos / lineHeight / 4 + 1);
-  console.log(rowNumber);
   return rowNumber;
 }
 
-function drawLines(c, height, color) {
+function cleanRow(c, lineHeight, rowNumber) {
+  var ctx = c.getContext("2d");
+  var yStart = (rowNumber - 1) * lineHeight * 4;
+  var height = lineHeight * 4;
+  var xStart = 0;
+  var width = c.width;
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(xStart, yStart, width, height);
+}
+
+function drawLines(c, height, color, row = -1) {
   pageHeight = c.height;
   pageWidth = c.width;
   var ctx = c.getContext("2d");
-  for (var vertical = height; vertical <= pageHeight; vertical += height) {
-    ctx.strokeStyle = color;
-    if (vertical % (height * 4) != 0) {
+  ctx.strokeStyle = color;
+  ctx.beginPath();
+  var rowNumber = 0;
+  for (var vertical = 0; vertical <= pageHeight; vertical += height) {
+    rowNumber = Math.floor(vertical / height / 4 + 1);
+    if ((row == -1 && vertical % (height * 4) != 0) || (rowNumber == row && vertical % (height * 4) != 0)) {
       ctx.moveTo(0, vertical);
       ctx.lineTo(pageWidth, vertical);
-      ctx.stroke();
     }
   }
+  ctx.closePath();
+  ctx.stroke();
 }
 
 function doText(fileName, c, lineHeight, color, font) {
