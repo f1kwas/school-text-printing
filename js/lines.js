@@ -11,9 +11,42 @@ function main() {
   var c = document.getElementById("myBoard");
   c.width = pageWidth;
   c.height = pageHeight;
+  c.lineHeight = lineHeight;
+  c.textColor = textColor;
+  c.textFont = textFont;
+  c.addEventListener("click", canvasClick, false);
 
   drawLines(c, lineHeight, lineColor);
   doText(fileName, c, lineHeight, textColor, textFont);
+}
+
+function canvasClick(event) {
+  var c = event.currentTarget;
+  var lineHeight = c.lineHeight;
+  var color = c.textColor;
+  var font = c.textFont;
+  var rect = c.getBoundingClientRect();
+  var mouseXPos = event.clientX - rect.left;
+  var mouseYPos = event.clientY - rect.top;
+  var rowNumber = calculateRow(mouseYPos, lineHeight);
+  var newText = promptText(rowNumber);
+  updateRow(c, rowNumber, lineHeight, newText, color, font);
+}
+
+function promptText(rowNumber) {
+  var text = prompt('Enter new text for row number ' + rowNumber + ':')
+  return text;
+}
+
+function updateRow(c, rowNumber, lineHeight, text, color, font) {
+  var position = lineHeight * 4 * rowNumber - lineHeight;
+  printText(c, text, position, color, font);
+}
+
+function calculateRow(yPos, lineHeight) {
+  var rowNumber = Math.floor(yPos / lineHeight / 4 + 1);
+  console.log(rowNumber);
+  return rowNumber;
 }
 
 function drawLines(c, height, color) {
