@@ -8,14 +8,14 @@ function main() {
   var textFont = '75px schoolFont';
   var fileName = '../text.txt'
 
-  var c = document.getElementById("myBoard");
+  var c = document.getElementById('myBoard');
   c.width = pageWidth;
   c.height = pageHeight;
   c.lineHeight = lineHeight;
   c.lineColor = lineColor;
   c.textColor = textColor;
   c.textFont = textFont;
-  c.addEventListener("click", canvasClick, false);
+  c.addEventListener('click', canvasClick, false);
 
   drawLines(c, lineHeight, lineColor);
   doText(fileName, c, lineHeight, textColor, textFont);
@@ -53,7 +53,7 @@ function calculateRow(yPos, lineHeight) {
 }
 
 function cleanRow(c, lineHeight, rowNumber) {
-  var ctx = c.getContext("2d");
+  var ctx = c.getContext('2d');
   var yStart = (rowNumber - 1) * lineHeight * 4;
   var height = lineHeight * 4;
   var xStart = 0;
@@ -65,7 +65,7 @@ function cleanRow(c, lineHeight, rowNumber) {
 function drawLines(c, height, color, row = -1) {
   pageHeight = c.height;
   pageWidth = c.width;
-  var ctx = c.getContext("2d");
+  var ctx = c.getContext('2d');
   ctx.strokeStyle = color;
   ctx.beginPath();
   var rowNumber = 0;
@@ -99,7 +99,7 @@ function printLines(c, text, lineHeight, color, font) {
 
 function printText(c, text, position, color, font) {
   var leftMargin = 20;
-  var ctx = c.getContext("2d");
+  var ctx = c.getContext('2d');
   ctx.font = font;
   ctx.fillStyle = color;
   ctx.fillText(text, leftMargin, position);
