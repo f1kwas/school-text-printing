@@ -7,6 +7,19 @@
   border: 0px solid #000000;
 }
 
+#textInput {
+  border: none;
+  background: transparent;
+  visibility: hidden;
+  font-family: schoolFont;
+  font-size: 75px;
+  position: absolute;
+  left: 8px;
+  top: 28px;
+  width: 840px;
+  padding-left: 20px;
+}
+
 #initText {
   position: absolute;
   left: 10px;

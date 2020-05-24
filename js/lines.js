@@ -9,31 +9,57 @@ function main() {
   var texts = [];
 
   var c = document.getElementById('myBoard');
+  var k = document.getElementById('textInput');
+
+  k.lineHeight = lineHeight;
+  k.lineColor = lineColor;
+  k.textColor = textColor;
+  k.textFont = textFont;
+  k.canvas = c;
+
   c.width = pageWidth;
   c.height = pageHeight;
   c.lineHeight = lineHeight;
-  c.lineColor = lineColor;
-  c.textColor = textColor;
-  c.textFont = textFont;
+
+  texts = initText();
+  c.texts = texts;
+
   c.addEventListener('click', canvasClick, false);
+  k.addEventListener('keydown', textFormKeyDown, false);
 
   drawLines(c, lineHeight, lineColor);
-  texts = initText();
   printLines(c, texts, lineHeight, textColor, textFont);
 }
 
 function canvasClick(event) {
   var c = event.currentTarget;
   var lineHeight = c.lineHeight;
-  var lineColor = c.lineColor;
-  var color = c.textColor;
-  var font = c.textFont;
+  var texts = c.texts;
   var rect = c.getBoundingClientRect();
   var mouseXPos = event.clientX - rect.left;
   var mouseYPos = event.clientY - rect.top;
   var rowNumber = calculateRow(mouseYPos, lineHeight);
-  var newText = promptText(rowNumber);
-  updateRow(c, rowNumber, lineHeight, newText, color, font, lineColor);
+  var textForm = document.getElementById('textInput');
+  textForm.style.top = ((rowNumber - 1) * lineHeight * 4 + lineHeight - 2).toString() + 'px';
+  textForm.value = texts[rowNumber - 1];
+  textForm.style.visibility = 'visible';
+  textForm.focus();
+}
+
+function textFormKeyDown(event) {
+  if(event.keyCode == 13) {
+    var k = event.currentTarget;
+    var lineHeight = k.lineHeight;
+    var lineColor = k.lineColor;
+    var color = k.textColor;
+    var font = k.textFont;
+    var newText = k.value;
+    var rowNumber = (parseInt(k.style.top.replace('px', '')) + 2 - lineHeight) / 4 / lineHeight + 1;
+    var c = k.canvas;
+    updateRow(c, rowNumber, lineHeight, newText, color, font, lineColor);
+    k.style.visibility = 'hidden';
+    c.focus();
+  }
 }
 
 function promptText(rowNumber) {
