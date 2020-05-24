@@ -56,6 +56,7 @@ function textFormKeyDown(event) {
     var newText = k.value;
     var rowNumber = (parseInt(k.style.top.replace('px', '')) + 2 - lineHeight) / 4 / lineHeight + 1;
     var c = k.canvas;
+    c.texts[rowNumber - 1] = newText;
     updateRow(c, rowNumber, lineHeight, newText, color, font, lineColor);
     k.style.visibility = 'hidden';
     c.focus();
