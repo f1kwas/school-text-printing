@@ -3,8 +3,8 @@ function main() {
   var pageWidth = 840;
   var pageHeight = 1188;
   var lineHeight = 30;
-  var lineColor = '#1fefef';
-  var textColor = '#c8c8c8';
+  var lineColor = '#a5f5f5';
+  var textColor = '#b8b8b8';
   var textFont = '75px schoolFont';
   var texts = [];
 
