@@ -6,7 +6,7 @@ function main() {
   var lineColor = '#1fefef';
   var textColor = '#c8c8c8';
   var textFont = '75px schoolFont';
-  var fileName = '../text.txt'
+  var texts = [];
 
   var c = document.getElementById('myBoard');
   c.width = pageWidth;
@@ -18,7 +18,8 @@ function main() {
   c.addEventListener('click', canvasClick, false);
 
   drawLines(c, lineHeight, lineColor);
-  doText(fileName, c, lineHeight, textColor, textFont);
+  texts = initText();
+  printLines(c, texts, lineHeight, textColor, textFont);
 }
 
 function canvasClick(event) {
@@ -80,13 +81,11 @@ function drawLines(c, height, color, row = -1) {
   ctx.stroke();
 }
 
-function doText(fileName, c, lineHeight, color, font) {
-  var promise = fetch(fileName)
-    .then(response => response.text())
-    .then(texts => {
-      texts = texts.split('\n');
-      printLines(c, texts, lineHeight, color, font);
-    });
+function initText() {
+  var frame = document.getElementById('initText');
+  var frameData = frame.contentDocument.body.textContent;
+  var texts = frameData.split('\n');
+  return texts;
 }
 
 function printLines(c, text, lineHeight, color, font) {

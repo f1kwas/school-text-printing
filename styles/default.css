@@ -1,8 +1,15 @@
+@font-face {
+  font-family: schoolFont;
+  src: url(../fonts/Elementarz2.ttf);
+}
+
 #myBoard {
   border: 0px solid #000000;
 }
 
-@font-face {
-  font-family: schoolFont;
-  src: url(../fonts/Elementarz2.ttf);
+#initText {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  visibility: hidden;
 }
