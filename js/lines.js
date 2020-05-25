@@ -8,35 +8,34 @@ function main() {
   var textFont = '75px schoolFont';
   var texts = [];
 
-  var c = document.getElementById('myBoard');
-  var k = document.getElementById('textInput');
+  var canvas = document.getElementById('myBoard');
+  var textInput = document.getElementById('textInput');
 
-  k.lineHeight = lineHeight;
-  k.lineColor = lineColor;
-  k.textColor = textColor;
-  k.textFont = textFont;
-  k.canvas = c;
+  textInput.lineHeight = lineHeight;
+  textInput.lineColor = lineColor;
+  textInput.textColor = textColor;
+  textInput.textFont = textFont;
+  textInput.canvas = canvas;
 
-  c.width = pageWidth;
-  c.height = pageHeight;
-  c.lineHeight = lineHeight;
+  canvas.width = pageWidth;
+  canvas.height = pageHeight;
+  canvas.lineHeight = lineHeight;
 
   texts = initText();
-  c.texts = texts;
+  canvas.texts = texts;
 
-  c.addEventListener('click', canvasClick, false);
-  k.addEventListener('keydown', textFormKeyDown, false);
+  canvas.addEventListener('click', canvasClick, false);
+  textInput.addEventListener('keydown', textFormKeyDown, false);
 
-  drawLines(c, lineHeight, lineColor);
-  printLines(c, texts, lineHeight, textColor, textFont);
+  drawLines(canvas, lineHeight, lineColor);
+  printLines(canvas, texts, lineHeight, textColor, textFont);
 }
 
 function canvasClick(event) {
-  var c = event.currentTarget;
-  var lineHeight = c.lineHeight;
-  var texts = c.texts;
-  var rect = c.getBoundingClientRect();
-  var mouseXPos = event.clientX - rect.left;
+  var canvas = event.currentTarget;
+  var lineHeight = canvas.lineHeight;
+  var texts = canvas.texts;
+  var rect = canvas.getBoundingClientRect();
   var mouseYPos = event.clientY - rect.top;
   var rowNumber = calculateRow(mouseYPos, lineHeight);
   var textForm = document.getElementById('textInput');
@@ -48,31 +47,26 @@ function canvasClick(event) {
 
 function textFormKeyDown(event) {
   if(event.keyCode == 13) {
-    var k = event.currentTarget;
-    var lineHeight = k.lineHeight;
-    var lineColor = k.lineColor;
-    var color = k.textColor;
-    var font = k.textFont;
-    var newText = k.value;
-    var rowNumber = (parseInt(k.style.top.replace('px', '')) + 2 - lineHeight) / 4 / lineHeight + 1;
-    var c = k.canvas;
-    c.texts[rowNumber - 1] = newText;
-    updateRow(c, rowNumber, lineHeight, newText, color, font, lineColor);
-    k.style.visibility = 'hidden';
-    c.focus();
+    var textInput = event.currentTarget;
+    var lineHeight = textInput.lineHeight;
+    var lineColor = textInput.lineColor;
+    var color = textInput.textColor;
+    var font = textInput.textFont;
+    var newText = textInput.value;
+    var rowNumber = (parseInt(textInput.style.top.replace('px', '')) + 2 - lineHeight) / 4 / lineHeight + 1;
+    var canvas = textInput.canvas;
+    canvas.texts[rowNumber - 1] = newText;
+    updateRow(canvas, rowNumber, lineHeight, newText, color, font, lineColor);
+    textInput.style.visibility = 'hidden';
+    canvas.focus();
   }
 }
 
-function promptText(rowNumber) {
-  var text = prompt('Enter new text for row number ' + rowNumber + ':')
-  return text;
-}
-
-function updateRow(c, rowNumber, lineHeight, text, textColor, font, lineColor) {
+function updateRow(canvas, rowNumber, lineHeight, text, textColor, font, lineColor) {
   var position = lineHeight * 4 * rowNumber - lineHeight;
-  cleanRow(c, lineHeight, rowNumber);
-  drawLines(c, lineHeight, lineColor, rowNumber);
-  printText(c, text, position, textColor, font);
+  cleanRow(canvas, lineHeight, rowNumber);
+  drawLines(canvas, lineHeight, lineColor, rowNumber);
+  printText(canvas, text, position, textColor, font);
 }
 
 function calculateRow(yPos, lineHeight) {
@@ -80,20 +74,20 @@ function calculateRow(yPos, lineHeight) {
   return rowNumber;
 }
 
-function cleanRow(c, lineHeight, rowNumber) {
-  var ctx = c.getContext('2d');
+function cleanRow(canvas, lineHeight, rowNumber) {
+  var ctx = canvas.getContext('2d');
   var yStart = (rowNumber - 1) * lineHeight * 4;
   var height = lineHeight * 4;
   var xStart = 0;
-  var width = c.width;
+  var width = canvas.width;
   ctx.fillStyle = '#fff';
   ctx.fillRect(xStart, yStart, width, height);
 }
 
-function drawLines(c, height, color, row = -1) {
-  pageHeight = c.height;
-  pageWidth = c.width;
-  var ctx = c.getContext('2d');
+function drawLines(canvas, height, color, row = -1) {
+  pageHeight = canvas.height;
+  pageWidth = canvas.width;
+  var ctx = canvas.getContext('2d');
   ctx.strokeStyle = color;
   ctx.beginPath();
   var rowNumber = 0;
@@ -115,17 +109,17 @@ function initText() {
   return texts;
 }
 
-function printLines(c, text, lineHeight, color, font) {
+function printLines(canvas, text, lineHeight, color, font) {
   var textVerticalPosition = 0;
   for (var i = 0; i < text.length; i++) {
     textVerticalPosition = lineHeight * 4 * (i + 1) - lineHeight;
-    printText(c, text[i], textVerticalPosition, color, font);
+    printText(canvas, text[i], textVerticalPosition, color, font);
   }
 }
 
-function printText(c, text, position, color, font) {
+function printText(canvas, text, position, color, font) {
   var leftMargin = 20;
-  var ctx = c.getContext('2d');
+  var ctx = canvas.getContext('2d');
   ctx.font = font;
   ctx.fillStyle = color;
   ctx.fillText(text, leftMargin, position);
