@@ -1,15 +1,15 @@
 function main() {
 
-  var pageWidth = 840;
-  var pageHeight = 1188;
-  var lineHeight = 30;
-  var lineColor = '#a5f5f5';
-  var textColor = '#b8b8b8';
-  var textFont = '75px schoolFont';
-  var texts = [];
+  let pageWidth = 840;
+  let pageHeight = 1188;
+  let lineHeight = 30;
+  let lineColor = '#a5f5f5';
+  let textColor = '#b8b8b8';
+  let textFont = '75px schoolFont';
+  let texts = [];
 
-  var canvas = document.getElementById('myBoard');
-  var textInput = document.getElementById('textInput');
+  let canvas = document.getElementById('myBoard');
+  let textInput = document.getElementById('textInput');
 
   textInput.lineHeight = lineHeight;
   textInput.lineColor = lineColor;
@@ -32,13 +32,13 @@ function main() {
 }
 
 function canvasClick(event) {
-  var canvas = event.currentTarget;
-  var lineHeight = canvas.lineHeight;
-  var texts = canvas.texts;
-  var rect = canvas.getBoundingClientRect();
-  var mouseYPos = event.clientY - rect.top;
-  var rowNumber = calculateRow(mouseYPos, lineHeight);
-  var textForm = document.getElementById('textInput');
+  let canvas = event.currentTarget;
+  let lineHeight = canvas.lineHeight;
+  let texts = canvas.texts;
+  let rect = canvas.getBoundingClientRect();
+  let mouseYPos = event.clientY - rect.top;
+  let rowNumber = calculateRow(mouseYPos, lineHeight);
+  let textForm = document.getElementById('textInput');
   textForm.style.top = ((rowNumber - 1) * lineHeight * 4 + lineHeight - 2).toString() + 'px';
   textForm.value = texts[rowNumber - 1];
   textForm.style.visibility = 'visible';
@@ -46,15 +46,15 @@ function canvasClick(event) {
 }
 
 function textFormKeyDown(event) {
-  if(event.keyCode == 13) {
-    var textInput = event.currentTarget;
-    var lineHeight = textInput.lineHeight;
-    var lineColor = textInput.lineColor;
-    var color = textInput.textColor;
-    var font = textInput.textFont;
-    var newText = textInput.value;
-    var rowNumber = (parseInt(textInput.style.top.replace('px', '')) + 2 - lineHeight) / 4 / lineHeight + 1;
-    var canvas = textInput.canvas;
+  if (event.keyCode == 13) {
+    let textInput = event.currentTarget;
+    let lineHeight = textInput.lineHeight;
+    let lineColor = textInput.lineColor;
+    let color = textInput.textColor;
+    let font = textInput.textFont;
+    let newText = textInput.value;
+    let rowNumber = (parseInt(textInput.style.top.replace('px', '')) + 2 - lineHeight) / 4 / lineHeight + 1;
+    let canvas = textInput.canvas;
     canvas.texts[rowNumber - 1] = newText;
     updateRow(canvas, rowNumber, lineHeight, newText, color, font, lineColor);
     textInput.style.visibility = 'hidden';
@@ -63,23 +63,23 @@ function textFormKeyDown(event) {
 }
 
 function updateRow(canvas, rowNumber, lineHeight, text, textColor, font, lineColor) {
-  var position = lineHeight * 4 * rowNumber - lineHeight;
+  let position = lineHeight * 4 * rowNumber - lineHeight;
   cleanRow(canvas, lineHeight, rowNumber);
   drawLines(canvas, lineHeight, lineColor, rowNumber);
   printText(canvas, text, position, textColor, font);
 }
 
 function calculateRow(yPos, lineHeight) {
-  var rowNumber = Math.floor(yPos / lineHeight / 4 + 1);
+  let rowNumber = Math.floor(yPos / lineHeight / 4 + 1);
   return rowNumber;
 }
 
 function cleanRow(canvas, lineHeight, rowNumber) {
-  var ctx = canvas.getContext('2d');
-  var yStart = (rowNumber - 1) * lineHeight * 4;
-  var height = lineHeight * 4;
-  var xStart = 0;
-  var width = canvas.width;
+  let ctx = canvas.getContext('2d');
+  let yStart = (rowNumber - 1) * lineHeight * 4;
+  let height = lineHeight * 4;
+  let xStart = 0;
+  let width = canvas.width;
   ctx.fillStyle = '#fff';
   ctx.fillRect(xStart, yStart, width, height);
 }
@@ -87,11 +87,11 @@ function cleanRow(canvas, lineHeight, rowNumber) {
 function drawLines(canvas, height, color, row = -1) {
   pageHeight = canvas.height;
   pageWidth = canvas.width;
-  var ctx = canvas.getContext('2d');
+  let ctx = canvas.getContext('2d');
   ctx.strokeStyle = color;
   ctx.beginPath();
-  var rowNumber = 0;
-  for (var vertical = 0; vertical <= pageHeight; vertical += height) {
+  let rowNumber = 0;
+  for (let vertical = 0; vertical <= pageHeight; vertical += height) {
     rowNumber = Math.floor(vertical / height / 4 + 1);
     if ((row == -1 && vertical % (height * 4) != 0) || (rowNumber == row && vertical % (height * 4) != 0)) {
       ctx.moveTo(0, vertical);
@@ -103,23 +103,23 @@ function drawLines(canvas, height, color, row = -1) {
 }
 
 function initText() {
-  var frame = document.getElementById('initText');
-  var frameData = frame.contentDocument.body.textContent;
-  var texts = frameData.split('\n');
+  let frame = document.getElementById('initText');
+  let frameData = frame.contentDocument.body.textContent;
+  let texts = frameData.split('\n');
   return texts;
 }
 
 function printLines(canvas, text, lineHeight, color, font) {
-  var textVerticalPosition = 0;
-  for (var i = 0; i < text.length; i++) {
+  let textVerticalPosition = 0;
+  for (let i = 0; i < text.length; i++) {
     textVerticalPosition = lineHeight * 4 * (i + 1) - lineHeight;
     printText(canvas, text[i], textVerticalPosition, color, font);
   }
 }
 
 function printText(canvas, text, position, color, font) {
-  var leftMargin = 20;
-  var ctx = canvas.getContext('2d');
+  let leftMargin = 20;
+  let ctx = canvas.getContext('2d');
   ctx.font = font;
   ctx.fillStyle = color;
   ctx.fillText(text, leftMargin, position);
