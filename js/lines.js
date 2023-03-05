@@ -1,7 +1,7 @@
 function main() {
 
-  let pageWidth = 840;
-  let pageHeight = 1188;
+  let pageWidth = 1680;
+  let pageHeight = 2376;
   let lineHeight = 30;
   let lineColor = '#a5f5f5';
   let textColor = '#b8b8b8';
